@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser, HR
 from .forms import CustomUserCreationForm
 
 
@@ -10,7 +10,6 @@ class UsersAdmin(UserAdmin):
     list_display = (
         "email",
         "name",
-        "password",
         "surname",
         "role",
         "is_staff",
@@ -18,7 +17,19 @@ class UsersAdmin(UserAdmin):
     )
     list_filter = ("is_staff", "is_active", "role")
     fieldsets = (
-        (None, {"fields": ("email", "name", "surname", "role", "password")}),
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "name",
+                    "surname",
+                    "role",
+                    "password",
+                    "premium_expires_at",
+                )
+            },
+        ),
         (
             "Permissions",
             {
@@ -49,9 +60,17 @@ class UsersAdmin(UserAdmin):
                 ),
             },
         ),
+        ("HR Details (for HR Role)", {"fields": ("company_name", "company_nip","telephone","city","street","number_street",'postcode')}),
+        
     )
     search_fields = ("email",)
     ordering = ("email",)
 
 
+class HRAdmin(admin.ModelAdmin):
+    model = HR
+    list_display = ("user", "company_name")
+
+
 admin.site.register(CustomUser, UsersAdmin)
+admin.site.register(HR, HRAdmin)

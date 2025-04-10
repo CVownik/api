@@ -56,9 +56,29 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         if self.role == Role.USER:
             self.premium_expires_at = None
         elif self.role == Role.HR and not self.premium_expires_at:
-            self.premium_expires_at = default_premium_expiry
+            self.premium_expires_at = default_premium_expiry()
 
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email
+
+
+class HR(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=100)
+    company_nip = models.CharField(max_length=10)
+    telephone = models.CharField(max_length=9)
+    city = models.CharField(max_length=100)
+    street = models.CharField(max_length=100)
+    number_street = models.CharField(max_length=5)
+    postcode = models.CharField(max_length=10)
+
+    def save(self, *args, **kwargs):
+        self.user.role = Role.HR
+        self.user.save()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.name} {self.user.surname} - {self.company_name}"
