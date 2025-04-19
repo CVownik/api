@@ -70,6 +70,7 @@ class HR(models.Model):
     company_name = models.CharField(max_length=100)
     company_nip = models.CharField(max_length=10)
     telephone = models.CharField(max_length=9)
+    country = models.CharField(max_length=100, null=True)
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
     number_street = models.CharField(max_length=5)

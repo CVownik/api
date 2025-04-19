@@ -60,8 +60,20 @@ class UsersAdmin(UserAdmin):
                 ),
             },
         ),
-        ("HR Details (for HR Role)", {"fields": ("company_name", "company_nip","telephone","city","street","number_street",'postcode')}),
-        
+        (
+            "HR Details (for HR Role)",
+            {
+                "fields": (
+                    "company_name",
+                    "company_nip",
+                    "telephone",
+                    "city",
+                    "street",
+                    "number_street",
+                    "postcode",
+                )
+            },
+        ),
     )
     search_fields = ("email",)
     ordering = ("email",)
