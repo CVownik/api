@@ -37,9 +37,8 @@ schema_view = get_schema_view(
 )
 
 
-
 urlpatterns = [
-    path('api-token-auth/', CustomAuthToken.as_view(), name='API Token'),
+    path("api-token-auth/", CustomAuthToken.as_view(), name="API Token"),
     path("admin/", admin.site.urls),
     path(
         "swagger/",

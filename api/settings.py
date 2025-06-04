@@ -37,11 +37,11 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
 
 INSTALLED_APPS = [
     "users",
-    'cv',
-    'authentication',
+    "cv",
+    "authentication",
     "rest_framework",
-    'rest_framework.authtoken',
-    'drf_yasg',
+    "rest_framework.authtoken",
+    "drf_yasg",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -143,10 +143,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Rest_Framework settings
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }

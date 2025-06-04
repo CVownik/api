@@ -63,6 +63,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    def get_id(self):
+        return self.id
+
 
 class HR(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
