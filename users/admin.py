@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, HR
+from .models import CustomUser, HR, Premium
 from .forms import CustomUserCreationForm
 
 
@@ -11,11 +11,12 @@ class UsersAdmin(UserAdmin):
         "email",
         "name",
         "surname",
-        "role",
+        'hr_role',
+        'premium_role',
         "is_staff",
         "is_active",
     )
-    list_filter = ("is_staff", "is_active", "role")
+    list_filter = ("is_staff", "is_active")
     fieldsets = (
         (
             None,
@@ -24,8 +25,10 @@ class UsersAdmin(UserAdmin):
                     "email",
                     "name",
                     "surname",
-                    "role",
+                    'hr_role',
+                    'premium_role',
                     "password",
+                    "hr_expires_at",
                     "premium_expires_at",
                 )
             },
@@ -52,7 +55,8 @@ class UsersAdmin(UserAdmin):
                     "email",
                     "name",
                     "surname",
-                    "role",
+                    'hr_role',
+                    'premium_role',
                     "password1",
                     "password2",
                     "is_staff",
@@ -84,5 +88,11 @@ class HRAdmin(admin.ModelAdmin):
     list_display = ("user", "company_name")
 
 
+class PremiumAdmin(admin.ModelAdmin):
+    model = Premium
+    list_display = ("user",)
+
+
 admin.site.register(CustomUser, UsersAdmin)
 admin.site.register(HR, HRAdmin)
+admin.site.register(Premium, PremiumAdmin)

@@ -4,16 +4,21 @@ from users.models import CustomUser
 
 # Create your models here.
 
+
 def user_avatar_upload_path(instance, filename):
-    return f"avatars/{instance.userId.id}/{filename}"
+    return f"{instance.userId.id}/avatars/{instance.id}/{filename}"
+
+
+def user_thumbnail_upload_path(instance, filename):
+    return f"{instance.userId.id}/thumbnails/{instance.id}/{filename}"
+
 
 class CVInfo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    userId = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    avatar = models.ImageField(
-        upload_to=user_avatar_upload_path,
-        null=True,
-        blank=True
+    userId = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to=user_avatar_upload_path, null=True, blank=True)
+    thumbnail = models.ImageField(
+        upload_to=user_avatar_upload_path, null=True, blank=True
     )
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)

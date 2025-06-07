@@ -54,13 +54,15 @@ class DutiesAdmin(admin.ModelAdmin):
 
     list_filter = ("description",)
 
+
 class EducationAdmin(admin.ModelAdmin):
     model = Education
 
     list_display = ("cv_info_id", "institution", "degree")
 
     list_filter = ("institution", "degree", "start_date", "end_date")
-    
+
+
 class LanguagesAdmin(admin.ModelAdmin):
     model = Languages
 
@@ -68,26 +70,30 @@ class LanguagesAdmin(admin.ModelAdmin):
 
     list_filter = ("language",)
 
+
 class SoftSkillsAdmin(admin.ModelAdmin):
     model = SoftSkills
 
     list_display = ("cv_info_id", "skill")
 
     list_filter = ("skill",)
-    
+
+
 class HardSkillsAdmin(admin.ModelAdmin):
     model = HardSkills
 
     list_display = ("cv_info_id", "skill")
 
     list_filter = ("skill",)
-    
+
+
 class IntrestsAdmin(admin.ModelAdmin):
     model = Intrests
 
     list_display = ("cv_info_id", "interest")
 
     list_filter = ("interest",)
+
 
 admin.site.register(CVInfo, CVInfoAdmin)
 admin.site.register(Contact, ContactAdmin)

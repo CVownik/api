@@ -6,7 +6,7 @@ from .models import CustomUser, HR
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("email", "name", "surname", "role")
+        fields = ("email", "name", "surname", "hr_role", "premium_role")
 
     company_name = forms.CharField(required=False)
     company_nip = forms.CharField(required=False)
@@ -18,7 +18,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit)
-        if user.role == "HR":
+        if user.hr_role:
             hr_instance = HR(
                 user=user,
                 company_name=self.cleaned_data["company_name"],
