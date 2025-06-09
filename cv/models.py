@@ -55,8 +55,10 @@ class Experience(models.Model):
     cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
     position = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, null=True, blank=True)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True, blank=True)  # Optional field
+    description = models.TextField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return (
@@ -98,7 +100,7 @@ class Languages(models.Model):
         return f"{self.language} - {self.language_lever}"
 
 
-class Intrests(models.Model):
+class Interests(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
     interest = models.CharField(max_length=255)
@@ -132,3 +134,16 @@ class HardSkills(models.Model):
             f"Hard Skill: {self.skill} for "
             f"{self.cv_info_id.name} {self.cv_info_id.surname}"
         )
+
+
+class Projects(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    link = models.URLField(max_length=200, null=True, blank=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Project: {self.name} ({self.start_date} - {self.end_date})"

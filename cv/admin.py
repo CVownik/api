@@ -9,7 +9,8 @@ from .models import (
     Languages,
     SoftSkills,
     HardSkills,
-    Intrests,
+    Interests,
+    Projects,
 )
 
 # Register your models here.
@@ -87,12 +88,20 @@ class HardSkillsAdmin(admin.ModelAdmin):
     list_filter = ("skill",)
 
 
-class IntrestsAdmin(admin.ModelAdmin):
-    model = Intrests
+class InterestsAdmin(admin.ModelAdmin):
+    model = Interests
 
     list_display = ("cv_info_id", "interest")
 
     list_filter = ("interest",)
+
+
+class ProjectsAdmin(admin.ModelAdmin):
+    model = Projects
+
+    list_display = ("cv_info_id", "name", "description")
+
+    list_filter = ("name",)
 
 
 admin.site.register(CVInfo, CVInfoAdmin)
@@ -104,4 +113,5 @@ admin.site.register(Education, EducationAdmin)
 admin.site.register(Languages, LanguagesAdmin)
 admin.site.register(SoftSkills, SoftSkillsAdmin)
 admin.site.register(HardSkills, HardSkillsAdmin)
-admin.site.register(Intrests, IntrestsAdmin)
+admin.site.register(Interests, InterestsAdmin)
+admin.site.register(Projects, ProjectsAdmin)

@@ -22,10 +22,6 @@ def default_premium_expiry():
     return now() + timedelta(days=30)
 
 
-
-
-
-
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -123,4 +119,3 @@ class Premium(models.Model):
             f"{self.user.name} {self.user.surname} - "
             f"Premium until {self.user.premium_expires_at}"
         )
-        
