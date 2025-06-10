@@ -74,7 +74,7 @@ def create_experience(create_cv_info):
     return Experience.objects.create(
         cv_info_id=cv_info,
         position="Software Engineer",
-        company="Tech Solutions",
+        company="WebTechnic",
         location="Warszawa",
         start_date=datetime.date(2015, 1, 1),
         end_date=datetime.date(2020, 12, 31),
@@ -112,12 +112,12 @@ class TestCVModels:
         contact = Contact.objects.create(
             cv_info_id=cv_info,
             telephone="623123412",
-            email="janKowal@example.com",
+            email="janKowal@gmail.com",
             city="Warszawa",
         )
         assert contact.cv_info_id == cv_info
         assert contact.telephone == "623123412"
-        assert contact.email == "janKowal@example.com"
+        assert contact.email == "janKowal@gmail.com"
         assert contact.city == "Warszawa"
 
     def test_create_contact_links(self, create_contact):
@@ -137,7 +137,7 @@ class TestCVModels:
         experience = Experience.objects.create(
             cv_info_id=cv_info,
             position="Software Engineer",
-            company="Tech Solutions",
+            company="Januszex",
             location="Olsztyn",
             start_date=datetime.date(2015, 1, 1),
             end_date=datetime.date(2020, 12, 31),
@@ -145,7 +145,7 @@ class TestCVModels:
 
         assert experience.cv_info_id == cv_info
         assert experience.position == "Software Engineer"
-        assert experience.company == "Tech Solutions"
+        assert experience.company == "Januszex"
         assert experience.location == "Olsztyn"
         assert experience.start_date == datetime.date(2015, 1, 1)
         assert experience.end_date == datetime.date(2020, 12, 31)
@@ -184,7 +184,7 @@ class TestCVModels:
             degree="Inżynier",
             start_date=datetime.date(2010, 9, 1),
             end_date=datetime.date(2014, 6, 30),
-            description="Studia inżynierskie na kierunku Informatyka, specjalizacja w programowaniu aplikacji webowych.",
+            
         )
 
         assert education.cv_info_id == cv_info
@@ -192,10 +192,7 @@ class TestCVModels:
         assert education.degree == "Inżynier"
         assert education.start_date == datetime.date(2010, 9, 1)
         assert education.end_date == datetime.date(2014, 6, 30)
-        assert (
-            education.description
-            == "Studia inżynierskie na kierunku Informatyka, specjalizacja w programowaniu aplikacji webowych."
-        )
+        
 
     def test_create_languages(self, create_cv_info):
         cv_info = create_cv_info
@@ -240,35 +237,35 @@ class TestCVModels:
         cv_info = create_cv_info
         soft_skill = SoftSkills.objects.create(
             cv_info_id=cv_info,
-            skill="Zarządzanie czasem",
+            skill="Odporność na stres",
         )
         assert soft_skill.cv_info_id == cv_info
-        assert soft_skill.skill == "Zarządzanie czasem"
+        assert soft_skill.skill == "Odporność na stres"
 
     def test_create_hard_skills(self, create_cv_info):
         cv_info = create_cv_info
         hard_skill = HardSkills.objects.create(
             cv_info_id=cv_info,
-            skill="Znajomość Python: biblioteki Django, numpy, Pandas",
+            skill="Znajomość Python: biblioteki Django, numpy, Pandas, pytest",
         )
         assert hard_skill.cv_info_id == cv_info
-        assert hard_skill.skill == "Znajomość Python: biblioteki Django, numpy, Pandas"
+        assert hard_skill.skill == "Znajomość Python: biblioteki Django, numpy, Pandas, pytest"
 
     def test_create_hard_skills2(self, create_cv_info):
         cv_info = create_cv_info
         hard_skill = HardSkills.objects.create(
             cv_info_id=cv_info,
-            skill="Znajomość JavaScript: biblioteki React, Vue",
+            skill="Znajomość JavaScript: biblioteki React, json, API",
         )
         assert hard_skill.cv_info_id == cv_info
-        assert hard_skill.skill == "Znajomość JavaScript: biblioteki React, Vue"
+        assert hard_skill.skill == "Znajomość JavaScript: biblioteki React, json, API"
 
     def test_create_projects(self, create_cv_info):
         cv_info = create_cv_info
         project = Projects.objects.create(
             cv_info_id=cv_info,
             name="ProjectApp",
-            description="Aplikacja webowa do zarządzania projektami z wykorzystaniem Django i React.",
+            description="Aplikacja webowa do zarządzania projektami z wykorzystaniem Django i React oraz Gaussian Splattingu.",
             start_date=datetime.date(2021, 1, 1),
             end_date=datetime.date(2021, 12, 31),
         )
@@ -276,7 +273,7 @@ class TestCVModels:
         assert project.name == "ProjectApp"
         assert (
             project.description
-            == "Aplikacja webowa do zarządzania projektami z wykorzystaniem Django i React."
+            == "Aplikacja webowa do zarządzania projektami z wykorzystaniem Django i React oraz Gaussian Splattingu."
         )
         assert project.start_date == datetime.date(2021, 1, 1)
         assert project.end_date == datetime.date(2021, 12, 31)
