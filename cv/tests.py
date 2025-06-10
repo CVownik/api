@@ -1,6 +1,7 @@
 import pytest
 from users.models import CustomUser
 from cv.models import (
+    CV,
     CVInfo,
     Contact,
     ContactLinks,
@@ -34,6 +35,15 @@ def create_user():
         trial_used_hr=False,
     )
 
+
+# Test CV Creation
+@pytest.fixture
+def create_cv(create_user):
+    user = create_user
+    return CV.objects.create(
+        user_id=user,
+        created_at=datetime.datetime.now(),
+    )
 
 # Test CVInfo Creation
 
@@ -86,10 +96,20 @@ def create_experience(create_cv_info):
 
 @pytest.mark.django_db
 class TestCVModels:
-    def test_create_cv_info(self, create_user):
+    
+    def test_create_cv(self, create_user):
         user = create_user
-        cv_info = CVInfo.objects.create(
+        cv = CV.objects.create(
             userId=user,
+            created_at=datetime.datetime.now(),
+        )
+        assert cv.userId == user
+        assert cv.created_at is not None
+    
+    def test_create_cv_info(self, create_cv):
+        cv = create_cv
+        cv_info = CVInfo.objects.create(
+            cv_id=cv,
             name="Jan",
             surname="Kowalski",
             about="Software Developer z 5-letnim doświadczeniem w branży IT.",
@@ -97,7 +117,7 @@ class TestCVModels:
             thumbnail=None,
             created_at=datetime.datetime.now(),
         )
-        assert cv_info.userId == user
+        assert cv_info.cv_id == cv
         assert cv_info.name == "Jan"
         assert cv_info.surname == "Kowalski"
         assert (
@@ -132,10 +152,10 @@ class TestCVModels:
         assert contact_link.name == "LinkedIn"
         assert contact_link.link == "https://www.linkedin.com/in/jankowalski/"
 
-    def test_create_experience(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_experience(self, create_cv):
+        cv = create_cv
         experience = Experience.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             position="Software Engineer",
             company="Januszex",
             location="Olsztyn",
@@ -143,7 +163,7 @@ class TestCVModels:
             end_date=datetime.date(2020, 12, 31),
         )
 
-        assert experience.cv_info_id == cv_info
+        assert experience.cv_id == cv
         assert experience.position == "Software Engineer"
         assert experience.company == "Januszex"
         assert experience.location == "Olsztyn"
@@ -176,100 +196,101 @@ class TestCVModels:
             == "Prowadzenie zespołu programistów w celu dostarczenia wysokiej jakości rozwiązań programowych."
         )
 
-    def test_create_education(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_education(self, create_cv):
+        cv = create_cv
         education = Education.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             institution="Uniwersytet Mikolaja Kopernika w Toruniu",
             degree="Inżynier",
             start_date=datetime.date(2010, 9, 1),
             end_date=datetime.date(2014, 6, 30),
-            
         )
 
-        assert education.cv_info_id == cv_info
+        assert education.cv_id == cv
         assert education.institution == "Uniwersytet Mikolaja Kopernika w Toruniu"
         assert education.degree == "Inżynier"
         assert education.start_date == datetime.date(2010, 9, 1)
         assert education.end_date == datetime.date(2014, 6, 30)
-        
 
-    def test_create_languages(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_languages(self, create_cv):
+        cv = create_cv
         language = Languages.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             language="Angielski",
             language_lever="B2",
         )
 
-        assert language.cv_info_id == cv_info
+        assert language.cv_id == cv
         assert language.language == "Angielski"
         assert language.language_lever == "B2"
 
-    def test_create_interests(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_interests(self, create_cv):
+        cv = create_cv
         interest = Interests.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             interest="Nurkowanie",
         )
-        assert interest.cv_info_id == cv_info
+        assert interest.cv_id == cv
         assert interest.interest == "Nurkowanie"
 
-    def test_create_interests2(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_interests2(self, create_cv):
+        cv = create_cv
         interest = Interests.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             interest="Programowanie w Pythonie",
         )
-        assert interest.cv_info_id == cv_info
+        assert interest.cv_id == cv
         assert interest.interest == "Programowanie w Pythonie"
 
-    def test_create_soft_skills(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_soft_skills(self, create_cv):
+        cv = create_cv
         soft_skill = SoftSkills.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             skill="Komunikacja interpersonalna",
         )
-        assert soft_skill.cv_info_id == cv_info
+        assert soft_skill.cv_id == cv
         assert soft_skill.skill == "Komunikacja interpersonalna"
 
-    def test_create_soft_skills2(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_soft_skills2(self, create_cv):
+        cv = create_cv
         soft_skill = SoftSkills.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             skill="Odporność na stres",
         )
-        assert soft_skill.cv_info_id == cv_info
+        assert soft_skill.cv_id == cv
         assert soft_skill.skill == "Odporność na stres"
 
-    def test_create_hard_skills(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_hard_skills(self, create_cv):
+        cv= create_cv
         hard_skill = HardSkills.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             skill="Znajomość Python: biblioteki Django, numpy, Pandas, pytest",
         )
-        assert hard_skill.cv_info_id == cv_info
-        assert hard_skill.skill == "Znajomość Python: biblioteki Django, numpy, Pandas, pytest"
+        assert hard_skill.cv_id == cv
+        assert (
+            hard_skill.skill
+            == "Znajomość Python: biblioteki Django, numpy, Pandas, pytest"
+        )
 
-    def test_create_hard_skills2(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_hard_skills2(self, create_cv):
+        cv = create_cv
         hard_skill = HardSkills.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             skill="Znajomość JavaScript: biblioteki React, json, API",
         )
-        assert hard_skill.cv_info_id == cv_info
+        assert hard_skill.cv_id == cv
         assert hard_skill.skill == "Znajomość JavaScript: biblioteki React, json, API"
 
-    def test_create_projects(self, create_cv_info):
-        cv_info = create_cv_info
+    def test_create_projects(self, create_cv):
+        cv = create_cv
         project = Projects.objects.create(
-            cv_info_id=cv_info,
+            cv_id=cv,
             name="ProjectApp",
             description="Aplikacja webowa do zarządzania projektami z wykorzystaniem Django i React oraz Gaussian Splattingu.",
             start_date=datetime.date(2021, 1, 1),
             end_date=datetime.date(2021, 12, 31),
         )
-        assert project.cv_info_id == cv_info
+        assert project.cv_id == cv
         assert project.name == "ProjectApp"
         assert (
             project.description

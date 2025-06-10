@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import (
+    CV,
     CVInfo,
     Contact,
     ContactLinks,
@@ -15,6 +16,14 @@ from .models import (
 
 # Register your models here.
 
+
+class CVAdmin(admin.ModelAdmin):
+    model = CV
+
+    list_display = ("user_id", "created_at")
+
+    list_filter = ("created_at",)
+    
 
 class CVInfoAdmin(admin.ModelAdmin):
     model = CVInfo
@@ -43,7 +52,7 @@ class ContactLinksAdmin(admin.ModelAdmin):
 class ExperienceAdmin(admin.ModelAdmin):
     model = Experience
 
-    list_display = ("cv_info_id", "position", "company")
+    list_display = ("cv_id", "position", "company")
 
     list_filter = ("position", "company", "start_date", "end_date")
 
@@ -59,7 +68,7 @@ class DutiesAdmin(admin.ModelAdmin):
 class EducationAdmin(admin.ModelAdmin):
     model = Education
 
-    list_display = ("cv_info_id", "institution", "degree")
+    list_display = ("cv_id", "institution", "degree")
 
     list_filter = ("institution", "degree", "start_date", "end_date")
 
@@ -67,7 +76,7 @@ class EducationAdmin(admin.ModelAdmin):
 class LanguagesAdmin(admin.ModelAdmin):
     model = Languages
 
-    list_display = ("cv_info_id", "language")
+    list_display = ("cv_id", "language")
 
     list_filter = ("language",)
 
@@ -75,7 +84,7 @@ class LanguagesAdmin(admin.ModelAdmin):
 class SoftSkillsAdmin(admin.ModelAdmin):
     model = SoftSkills
 
-    list_display = ("cv_info_id", "skill")
+    list_display = ("cv_id", "skill")
 
     list_filter = ("skill",)
 
@@ -83,7 +92,7 @@ class SoftSkillsAdmin(admin.ModelAdmin):
 class HardSkillsAdmin(admin.ModelAdmin):
     model = HardSkills
 
-    list_display = ("cv_info_id", "skill")
+    list_display = ("cv_id", "skill")
 
     list_filter = ("skill",)
 
@@ -91,7 +100,7 @@ class HardSkillsAdmin(admin.ModelAdmin):
 class InterestsAdmin(admin.ModelAdmin):
     model = Interests
 
-    list_display = ("cv_info_id", "interest")
+    list_display = ("cv_id", "interest")
 
     list_filter = ("interest",)
 
@@ -99,11 +108,12 @@ class InterestsAdmin(admin.ModelAdmin):
 class ProjectsAdmin(admin.ModelAdmin):
     model = Projects
 
-    list_display = ("cv_info_id", "name", "description")
+    list_display = ("cv_id", "name", "description")
 
     list_filter = ("name",)
 
 
+admin.site.register(CV, CVAdmin)
 admin.site.register(CVInfo, CVInfoAdmin)
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(ContactLinks, ContactLinksAdmin)

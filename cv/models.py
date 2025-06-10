@@ -13,10 +13,19 @@ def user_thumbnail_upload_path(instance, filename):
     return f"{instance.userId.id}/thumbnails/{instance.id}/{filename}"
 
 
+class CV(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"CV for {self.userId.name} {self.userId.surname} created at {self.created_at}"
+
+
 class CVInfo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    userId = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=user_avatar_upload_path, null=True, blank=True)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE, null=False)
+    avatar = models.ImageField(upload_to=user_avatar_upload_path,  null=True, blank=True)
     thumbnail = models.ImageField(
         upload_to=user_avatar_upload_path, null=True, blank=True
     )
@@ -52,7 +61,7 @@ class ContactLinks(models.Model):
 
 class Experience(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False)
     position = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
     location = models.CharField(max_length=255, null=True, blank=True)
@@ -77,7 +86,7 @@ class Duties(models.Model):
 
 class Education(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     institution = models.CharField(max_length=255)
     degree = models.CharField(max_length=255)
     start_date = models.DateField(null=True)
@@ -92,7 +101,7 @@ class Education(models.Model):
 
 class Languages(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     language = models.CharField(max_length=100)
     language_lever = models.CharField(max_length=50)
 
@@ -102,7 +111,7 @@ class Languages(models.Model):
 
 class Interests(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     interest = models.CharField(max_length=255)
 
     def __str__(self):
@@ -114,7 +123,7 @@ class Interests(models.Model):
 
 class SoftSkills(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     skill = models.CharField(max_length=255)
 
     def __str__(self):
@@ -126,7 +135,7 @@ class SoftSkills(models.Model):
 
 class HardSkills(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     skill = models.CharField(max_length=255)
 
     def __str__(self):
@@ -138,7 +147,7 @@ class HardSkills(models.Model):
 
 class Projects(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    cv_info_id = models.ForeignKey(CVInfo, on_delete=models.CASCADE)
+    cv_id = models.ForeignKey(CV, on_delete=models.CASCADE,  null=False, blank=True)
     name = models.CharField(max_length=255)
     description = models.TextField(max_length=500, null=True, blank=True)
     link = models.URLField(max_length=200, null=True, blank=True)
