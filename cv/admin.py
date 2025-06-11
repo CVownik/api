@@ -23,7 +23,7 @@ class CVAdmin(admin.ModelAdmin):
     list_display = ("user_id", "created_at")
 
     list_filter = ("created_at",)
-    
+
 
 class CVInfoAdmin(admin.ModelAdmin):
     model = CVInfo

@@ -22,7 +22,7 @@ import datetime
 @pytest.fixture
 def create_user():
 
-    return CustomUser.object.create_user(
+    return CustomUser.objects.create_user(
         email="test@example.com",
         password="testpassword123",
         name="Jan",
@@ -42,21 +42,22 @@ def create_cv(create_user):
     user = create_user
     return CV.objects.create(
         user_id=user,
+        thumbnail=None,
         created_at=datetime.datetime.now(),
     )
+
 
 # Test CVInfo Creation
 
 
 @pytest.fixture
-def create_cv_info(create_user):
+def create_cv_info(create_cv):
     return CVInfo.objects.create(
-        userId=create_user,
+        cv_id=create_cv,
         name="Ewa",
         surname="Kowalska",
         about="Software Developer z 10-letnim doświadczeniem w branży IT.",
         avatar=None,
-        thumbnail=None,
         created_at=datetime.datetime.now(),
     )
 
@@ -79,10 +80,10 @@ def create_contact(create_cv_info):
 
 
 @pytest.fixture
-def create_experience(create_cv_info):
-    cv_info = create_cv_info
+def create_experience(create_cv):
+    cv = create_cv
     return Experience.objects.create(
-        cv_info_id=cv_info,
+        cv_id=cv,
         position="Software Engineer",
         company="WebTechnic",
         location="Warszawa",
@@ -96,16 +97,18 @@ def create_experience(create_cv_info):
 
 @pytest.mark.django_db
 class TestCVModels:
-    
+
     def test_create_cv(self, create_user):
         user = create_user
         cv = CV.objects.create(
-            userId=user,
+            user_id=user,
+            thumbnail=None,
             created_at=datetime.datetime.now(),
         )
-        assert cv.userId == user
+        assert cv.user_id == user
+        assert not cv.thumbnail
         assert cv.created_at is not None
-    
+
     def test_create_cv_info(self, create_cv):
         cv = create_cv
         cv_info = CVInfo.objects.create(
@@ -114,7 +117,6 @@ class TestCVModels:
             surname="Kowalski",
             about="Software Developer z 5-letnim doświadczeniem w branży IT.",
             avatar=None,
-            thumbnail=None,
             created_at=datetime.datetime.now(),
         )
         assert cv_info.cv_id == cv
@@ -124,7 +126,6 @@ class TestCVModels:
             cv_info.about == "Software Developer z 5-letnim doświadczeniem w branży IT."
         )
         assert not cv_info.avatar
-        assert not cv_info.thumbnail
         assert cv_info.created_at is not None
 
     def test_create_contact(self, create_cv_info):
@@ -261,7 +262,7 @@ class TestCVModels:
         assert soft_skill.skill == "Odporność na stres"
 
     def test_create_hard_skills(self, create_cv):
-        cv= create_cv
+        cv = create_cv
         hard_skill = HardSkills.objects.create(
             cv_id=cv,
             skill="Znajomość Python: biblioteki Django, numpy, Pandas, pytest",

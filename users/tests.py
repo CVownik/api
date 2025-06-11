@@ -6,7 +6,7 @@ from users.models import CustomUser, HR, Premium
 
 @pytest.mark.django_db
 def test_create_user():
-    user = CustomUser.object.create_user(
+    user = CustomUser.objects.create_user(
         email="test@example.com",
         password="test123",
         name="Jan",
@@ -22,7 +22,7 @@ def test_create_user():
 
 @pytest.mark.django_db
 def test_create_superuser():
-    superuser = CustomUser.object.create_superuser(
+    superuser = CustomUser.objects.create_superuser(
         email="admin@example.com",
         password="admin123",
         name="Admin",
@@ -38,7 +38,7 @@ def test_create_superuser():
 
 @pytest.mark.django_db
 def test_create_hr_user():
-    user = CustomUser.object.create_user(
+    user = CustomUser.objects.create_user(
         email="hr@example.com", password="hr123", name="Adam", surname="Nowak"
     )
     hr = HR.objects.create(
@@ -69,7 +69,7 @@ def test_create_hr_user():
 
 @pytest.mark.django_db
 def test_create_premium_user():
-    user = CustomUser.object.create_user(
+    user = CustomUser.objects.create_user(
         email="ewaKowal@test.com",
         password="Kowalczyk1@3",
         name="Ewa",
