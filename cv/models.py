@@ -6,11 +6,11 @@ from users.models import CustomUser
 
 
 def user_avatar_upload_path(instance, filename):
-    return f"{instance.userId.id}/avatars/{instance.id}/{filename}"
+    return f"{instance.user_id.id}/avatars/{instance.id}/{filename}"
 
 
 def user_thumbnail_upload_path(instance, filename):
-    return f"{instance.userId.id}/thumbnails/{instance.id}/{filename}"
+    return f"{instance.user_id.id}/thumbnails/{instance.id}/{filename}"
 
 
 class CV(models.Model):
@@ -22,14 +22,14 @@ class CV(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"CV for {self.userId.name} {self.userId.surname} created at {self.created_at}"
+        return f"CV for {self.user_id.name} {self.user_id.surname} created at {self.created_at}"
 
 
 class CVInfo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cv_id = models.OneToOneField(CV, on_delete=models.CASCADE, null=False)
     avatar = models.ImageField(
-        upload_to=user_avatar_upload_path, null=False, blank=True
+        upload_to=user_avatar_upload_path, null=True, blank=True
     )
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)

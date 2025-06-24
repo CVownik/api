@@ -136,6 +136,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -185,6 +187,34 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+
+# Azure Storage settings
+
+
+AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")
+AZURE_CONTAINER = os.getenv("AZURE_CONTAINER_NAME")
+
+STORAGES = {
+    "default": {
+        "BACKEND": os.getenv("DEFAULT_FILE_STORAGE"),
+        "OPTIONS": {
+           "timeout": 20,
+           "expiration_secs": 500,
+              "connection_string": AZURE_CONNECTION_STRING,
+              "azure_container": AZURE_CONTAINER,
+        },
+        
+    },
+    "staticfiles": {
+        "BACKEND":"django.contrib.staticfiles.storage.StaticFilesStorage",
+        
+    },
+}
+
+
+
+
+
 # Swagger settings
 
 SWAGGER_SETTINGS = {
@@ -198,3 +228,4 @@ SWAGGER_SETTINGS = {
     },
     "USE_SESSION_AUTH": False,
 }
+
