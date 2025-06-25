@@ -28,9 +28,7 @@ class CV(models.Model):
 class CVInfo(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     cv_id = models.OneToOneField(CV, on_delete=models.CASCADE, null=False)
-    avatar = models.ImageField(
-        upload_to=user_avatar_upload_path, null=True, blank=True
-    )
+    avatar = models.ImageField(upload_to=user_avatar_upload_path, null=True, blank=True)
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     about = models.TextField()

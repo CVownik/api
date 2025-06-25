@@ -37,11 +37,12 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "0.0.0.0"]
 # Application definition
 
 INSTALLED_APPS = [
+    "django_filters",
     "users",
     "cv",
     "rest_framework",
     "rest_framework_simplejwt",
-    "drf_yasg",
+    "drf_spectacular",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -136,7 +137,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -151,10 +152,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -198,34 +201,28 @@ STORAGES = {
     "default": {
         "BACKEND": os.getenv("DEFAULT_FILE_STORAGE"),
         "OPTIONS": {
-           "timeout": 20,
-           "expiration_secs": 500,
-              "connection_string": AZURE_CONNECTION_STRING,
-              "azure_container": AZURE_CONTAINER,
+            "timeout": 20,
+            "expiration_secs": 500,
+            "connection_string": AZURE_CONNECTION_STRING,
+            "azure_container": AZURE_CONTAINER,
         },
-        
     },
     "staticfiles": {
-        "BACKEND":"django.contrib.staticfiles.storage.StaticFilesStorage",
-        
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
-
-
-
-
-# Swagger settings
-
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header",
-            "description": "Enter your JWT token in the format: `Bearer <your_token>`",
-        }
+# Spectacular settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "CVownik API",
+    "DESCRIPTION": "API for managing CVs",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "COMPONENT_NO_READ_ONLY_REQUIRED": True,
+    "SCHEMA_PATH_PREFIX": "/api/",
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
     },
-    "USE_SESSION_AUTH": False,
+    
 }
-
