@@ -84,7 +84,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class HR(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
+    user_id = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
     company_name = models.CharField(max_length=100)
     company_nip = models.CharField(max_length=10)
     telephone = models.CharField(max_length=9)
@@ -106,7 +106,7 @@ class HR(models.Model):
 
 class Premium(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
+    user_id = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.user.premium_role = True

@@ -224,5 +224,4 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_SETTINGS": {
         "persistAuthorization": True,
     },
-    
 }

@@ -42,7 +42,7 @@ class HRRegisterSerializer(serializers.ModelSerializer):
         def create(self, validated_data):
 
             user = validated_data.pop("user")
-            if user:
+            if user and not user.hr_role:
                 hr = HR.objects.create(
                     user=user,
                     company_name=validated_data["company_name"],
@@ -57,7 +57,49 @@ class HRRegisterSerializer(serializers.ModelSerializer):
                 user.hr_role = True
                 user.save()
                 return hr
+            elif not user:
+                raise serializers.ValidationError("User with this uuid does not exist.")
             else:
-                raise serializers.ValidationError(
-                    "User with this email does not exist."
-                )
+                raise serializers.ValidationError("User with this uuid has already hr role.")
+
+
+
+class PremiumRegisterSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=CustomUser.objects.all(), write_only=True
+    )
+
+    class Meta:
+        model = Premium
+        fields = ["user"]
+
+    def create(self, validated_data):
+        user = validated_data.pop("user")
+
+        if user and not user.premium_role:
+            premium = Premium.objects.create(user=user)
+            user.premium_role = True
+            user.save()
+            return premium
+        elif not user:
+            raise serializers.ValidationError("User with this uuid does not exist.")
+        else:
+            raise serializers.ValidationError("User with this uuid has already premium role.")
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+
+
+class HRSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HR
+        fields = "__all__"
+
+
+class PremiumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Premium
+        fields = "__all__"

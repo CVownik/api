@@ -31,10 +31,9 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/register/user", UserRegisterView.as_view(), name="user_register"),
-    path("api/register/hr", HRRegisterView.as_view(), name="hr_register"),
     path("admin/", admin.site.urls),
     path("api/", include("cv.urls")),
+    path("api/", include("users.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/swagger/",

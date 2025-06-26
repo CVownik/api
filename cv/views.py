@@ -1,7 +1,7 @@
 from rest_framework import viewsets, filters
 from .models import CV, CVInfo
 from .serializers import CVSerializer, CVInfoSerializer
-from .filters import CVFilter,CVInfoFilter
+from .filters import CVFilter, CVInfoFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, OpenApiParameter
@@ -12,40 +12,47 @@ class CVViewSet(viewsets.ModelViewSet):
     queryset = CV.objects.all()
     serializer_class = CVSerializer
     parser_classes = (MultiPartParser, FormParser)
-    filter_backends = [DjangoFilterBackend,filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_class = CVFilter
-    ordering_fields = ['thumbnail','created_at']
+    ordering_fields = ["thumbnail", "created_at"]
 
     @extend_schema(
         parameters=[
             OpenApiParameter(
+                name="id",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.QUERY,
+                description="Filter by ID",
+            ),
+            OpenApiParameter(
                 name="user_id",
                 type=OpenApiTypes.UUID,
                 location=OpenApiParameter.QUERY,
-                description="Filter by user ID"
+                description="Filter by user ID",
             ),
             OpenApiParameter(
-                name='created_at_from',
+                name="created_at_from",
                 type=OpenApiTypes.DATETIME,
                 location=OpenApiParameter.QUERY,
-                description='Filter by creation date from'
+                description="Filter by creation date from",
             ),
             OpenApiParameter(
-                name='created_at_to',
+                name="created_at_to",
                 type=OpenApiTypes.DATETIME,
                 location=OpenApiParameter.QUERY,
-                description='Filter by creation date to'
+                description="Filter by creation date to",
             ),
             OpenApiParameter(
-                name='ordering',
+                name="ordering",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Order by: created_at, thumbnail (use - for descending)'
+                description="Order by: created_at, thumbnail (use - for descending)",
             ),
         ]
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
 
 class CVInfoViewSet(viewsets.ModelViewSet):
     queryset = CVInfo.objects.all()
@@ -56,58 +63,57 @@ class CVInfoViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter,
     ]
     filterset_class = CVInfoFilter
-    ordering_fields = ['name','surname','created_at']
-
+    ordering_fields = ["name", "surname", "created_at"]
 
     @extend_schema(
         parameters=[
             OpenApiParameter(
-                name='cv_id',
+                name="id",
                 type=OpenApiTypes.UUID,
                 location=OpenApiParameter.QUERY,
-                description='Filter by CV ID'
+                description="Filter by ID",
             ),
             OpenApiParameter(
-                name='name',
+                name="cv_id",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.QUERY,
+                description="Filter by CV ID",
+            ),
+            OpenApiParameter(
+                name="name",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Filter by name (case insensitive)'
+                description="Filter by name (case insensitive)",
             ),
             OpenApiParameter(
-                name='surname',
+                name="surname",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Filter by surname (case insensitive)'
+                description="Filter by surname (case insensitive)",
             ),
             OpenApiParameter(
-                name='about',
+                name="about",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Filter by about field (case insensitive)'
+                description="Filter by about field (case insensitive)",
             ),
             OpenApiParameter(
-                name="about_contains",
-                type=OpenApiTypes.STR,
-                location=OpenApiParameter.QUERY,
-                description='Filter by about phrase field'
-            ),
-            OpenApiParameter(
-                name='created_at_from',
+                name="created_at_from",
                 type=OpenApiTypes.DATETIME,
                 location=OpenApiParameter.QUERY,
-                description='Filter by creation date from'
+                description="Filter by creation date from",
             ),
             OpenApiParameter(
-                name='created_at_to',
+                name="created_at_to",
                 type=OpenApiTypes.DATETIME,
                 location=OpenApiParameter.QUERY,
-                description='Filter by creation date to'
+                description="Filter by creation date to",
             ),
             OpenApiParameter(
-                name='ordering',
+                name="ordering",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description='Order by: created_at, name, surname (use - for descending)'
+                description="Order by: created_at, name, surname (use - for descending)",
             ),
         ]
     )

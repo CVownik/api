@@ -85,12 +85,12 @@ class UsersAdmin(UserAdmin):
 
 class HRAdmin(admin.ModelAdmin):
     model = HR
-    list_display = ("user", "company_name")
+    list_display = ("user_id", "company_name")
 
 
 class PremiumAdmin(admin.ModelAdmin):
     model = Premium
-    list_display = ("user",)
+    list_display = ("user_id",)
 
 
 admin.site.register(CustomUser, UsersAdmin)
