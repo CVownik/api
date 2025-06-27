@@ -1,7 +1,7 @@
 from rest_framework import viewsets, filters
-from .models import CV, CVInfo
-from .serializers import CVSerializer, CVInfoSerializer
-from .filters import CVFilter, CVInfoFilter
+from .models import CV, CVInfo, Contact
+from .serializers import CVSerializer, CVInfoSerializer,ContactSerializer
+from .filters import CVFilter, CVInfoFilter, ContactFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, OpenApiParameter
@@ -98,22 +98,66 @@ class CVInfoViewSet(viewsets.ModelViewSet):
                 description="Filter by about field (case insensitive)",
             ),
             OpenApiParameter(
-                name="created_at_from",
-                type=OpenApiTypes.DATETIME,
+                name="ordering",
+                type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description="Filter by creation date from",
+                description="Order by: created_at, name, surname (use - for descending)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    
+
+class ContactView(viewsets.ModelViewSet):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+    ]
+    filterset_class = ContactFilter
+    ordering_fields = ["telephone","email","city"]
+
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="id",
+                type=OpenApiTypes.UUID,
+                location=OpenApiParameter.QUERY,
+                description="Filter by ID",
             ),
             OpenApiParameter(
-                name="created_at_to",
-                type=OpenApiTypes.DATETIME,
+                name="cv_info_id",
+                type=OpenApiTypes.UUID,
                 location=OpenApiParameter.QUERY,
-                description="Filter by creation date to",
+                description="Filter by CV Info ID",
+            ),
+            OpenApiParameter(
+                name="telephone",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Filter by telephone",
+            ),
+            OpenApiParameter(
+                name="email",
+                type=OpenApiTypes.EMAIL,
+                location=OpenApiParameter.QUERY,
+                description="Filter by email",
+            ),
+            OpenApiParameter(
+                name="city",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Filter by city",
             ),
             OpenApiParameter(
                 name="ordering",
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                description="Order by: created_at, name, surname (use - for descending)",
+                description="Order by: telephone, email, city (use - for descending)",
             ),
         ]
     )

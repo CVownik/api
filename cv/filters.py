@@ -1,5 +1,5 @@
 import django_filters
-from .models import CV, CVInfo
+from .models import CV, CVInfo, Contact
 
 
 class CVFilter(django_filters.FilterSet):
@@ -23,13 +23,21 @@ class CVInfoFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
     surname = django_filters.CharFilter(field_name="surname", lookup_expr="icontains")
     about = django_filters.CharFilter(field_name="about", lookup_expr="icontains")
-    created_at_from = django_filters.DateTimeFilter(
-        field_name="created_at", lookup_expr="gte"
-    )
-    created_at_to = django_filters.DateTimeFilter(
-        field_name="created_at", lookup_expr="lte"
-    )
 
     class Meta:
         model = CVInfo
         fields = ["id", "cv_id", "name", "surname", "about"]
+
+
+class ContactFilter(django_filters.FilterSet):
+    id = django_filters.UUIDFilter()
+    cv_info_id = django_filters.UUIDFilter()
+    telephone = django_filters.CharFilter(
+        field_name="telephone", lookup_expr="icontains"
+    )
+    email = django_filters.CharFilter(field_name="email", lookup_expr="icontains")
+    city = django_filters.CharFilter(field_name="city", lookup_expr="icontains")
+
+    class Meta:
+        model = Contact
+        fields = ["id", "cv_info_id", "telephone", "email", "city"]

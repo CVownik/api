@@ -5,19 +5,19 @@ from users.models import CustomUser
 # Create your models here.
 
 
-def user_avatar_upload_path(instance, filename):
-    return f"{instance.user_id.id}/avatars/{instance.id}/{filename}"
+def user_avatar_upload_path(instance):
+    return f"{instance.user_id.id}/avatars/{instance.id}/avatar.jpg"
 
 
-def user_thumbnail_upload_path(instance, filename):
-    return f"{instance.user_id.id}/thumbnails/{instance.id}/{filename}"
+def user_thumbnail_upload_path(instance):
+    return f"{instance.user_id.id}/thumbnails/{instance.id}/thumbnail.jpg"
 
 
 class CV(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     thumbnail = models.ImageField(
-        upload_to=user_avatar_upload_path, null=False, blank=True
+        upload_to=user_thumbnail_upload_path, null=False, blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -32,7 +32,6 @@ class CVInfo(models.Model):
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     about = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.name}, {self.surname}"

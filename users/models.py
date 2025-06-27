@@ -95,13 +95,18 @@ class HR(models.Model):
     postcode = models.CharField(max_length=10)
 
     def save(self, *args, **kwargs):
-        self.user.hr_role = True
+        self.user_id.hr_role = True
 
-        self.user.save()
+        self.user_id.save()
         super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        self.user_id.hr_role = False
+        self.user_id.save()
+        super().delete(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.name} {self.user.surname} - {self.company_name}"
+        return f"{self.user_id.name} {self.user_id.surname} - {self.company_name}"
 
 
 class Premium(models.Model):
@@ -109,13 +114,18 @@ class Premium(models.Model):
     user_id = models.OneToOneField("CustomUser", on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        self.user.premium_role = True
+        self.user_id.premium_role = True
 
-        self.user.save()
+        self.user_id.save()
         super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        self.user_id.premium_role = False
+        self.user_id.save()
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return (
-            f"{self.user.name} {self.user.surname} - "
-            f"Premium until {self.user.premium_expires_at}"
+            f"{self.user_id.name} {self.user_id.surname} - "
+            f"Premium until {self.user_id.premium_expires_at}"
         )

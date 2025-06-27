@@ -58,7 +58,6 @@ def create_cv_info(create_cv):
         surname="Kowalska",
         about="Software Developer z 10-letnim doświadczeniem w branży IT.",
         avatar=None,
-        created_at=datetime.datetime.now(),
     )
 
 
@@ -117,7 +116,7 @@ class TestCVModels:
             surname="Kowalski",
             about="Software Developer z 5-letnim doświadczeniem w branży IT.",
             avatar=None,
-            created_at=datetime.datetime.now(),
+            
         )
         assert cv_info.cv_id == cv
         assert cv_info.name == "Jan"
@@ -126,7 +125,6 @@ class TestCVModels:
             cv_info.about == "Software Developer z 5-letnim doświadczeniem w branży IT."
         )
         assert not cv_info.avatar
-        assert cv_info.created_at is not None
 
     def test_create_contact(self, create_cv_info):
         cv_info = create_cv_info

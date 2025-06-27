@@ -42,7 +42,7 @@ def test_create_hr_user():
         email="hr@example.com", password="hr123", name="Adam", surname="Nowak"
     )
     hr = HR.objects.create(
-        user=user,
+        user_id=user,
         company_name="Plus Tecs",
         company_nip="3421234221",
         telephone="982342123",
@@ -64,7 +64,7 @@ def test_create_hr_user():
     assert hr.street == "Bałtycka"
     assert hr.number_street == "10"
     assert hr.postcode == "10-232"
-    assert hr.user == user
+    assert hr.user_id == user
 
 
 @pytest.mark.django_db
@@ -75,11 +75,11 @@ def test_create_premium_user():
         name="Ewa",
         surname="Kowalczyk",
     )
-    premium = Premium.objects.create(user=user)
+    premium = Premium.objects.create(user_id=user)
     assert user.email == "ewaKowal@test.com"
     assert user.check_password("Kowalczyk1@3")
     assert user.name == "Ewa"
     assert user.surname == "Kowalczyk"
     assert user.is_active
     assert user.premium_role
-    assert premium.user == user
+    assert premium.user_id == user

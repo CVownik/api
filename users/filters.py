@@ -4,7 +4,7 @@ from .models import CustomUser, HR, Premium
 
 class UserFilter(django_filters.FilterSet):
     id = django_filters.UUIDFilter()
-    email = django_filters.CharFilter()
+    email = django_filters.CharFilter(field_name="email", lookup_expr="icontains")
     name = django_filters.CharFilter(field_name="name", lookup_expr="icontains")
     surname = django_filters.CharFilter(field_name="surname", lookup_expr="icontains")
     created_at_from = django_filters.DateTimeFilter(
